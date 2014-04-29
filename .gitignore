@@ -1,1 +1,9 @@
+# phpstorm project files
 .idea
+
+# composer vendor dir
+/vendor
+
+# uncomment two lines below if need composer
+#composer.phar
+#

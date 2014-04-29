@@ -1,0 +1,31 @@
+{
+	"description": "The test job for cmtt coder vacancy",
+	"keywords": [
+		"Цукерберг позвонит",
+		"TJournal",
+		"Комитет",
+		"Стартап счастие :-]"
+	],
+	"homepage": "http://siliconrus.com/2014/04/cmtt-coder/",
+	"type": "project",
+	"require": {
+		"php": ">=5.4.0",
+		"yiisoft/yii2": "2.0.0-beta",
+		"yiisoft/yii2-composer": "2.0.0-beta",
+		"yiisoft/yii2-bootstrap": "2.0.0-beta"
+	},
+	"require-dev": {
+		"yiisoft/yii2-codeception": "2.0.0-beta",
+		"yiisoft/yii2-debug": "2.0.0-beta",
+		"yiisoft/yii2-gii": "2.0.0-beta"
+	},
+	"extra": {
+		"writable": [
+			"runtime",
+			"public_html/assets"
+		],
+		"executable": [
+			"yii"
+		]
+	}
+}

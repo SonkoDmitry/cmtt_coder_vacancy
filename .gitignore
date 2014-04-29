@@ -4,6 +4,9 @@
 # composer vendor dir
 /vendor
 
+# composer lock file
+composer.lock
+
 # uncomment two lines below if need composer
 #composer.phar
-#
+#composer.bat

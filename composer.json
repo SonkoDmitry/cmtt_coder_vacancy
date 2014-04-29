@@ -19,6 +19,12 @@
 		"yiisoft/yii2-debug": "2.0.0-beta",
 		"yiisoft/yii2-gii": "2.0.0-beta"
 	},
+	"scripts": {
+		"post-autoload-dump": [
+			"yii\\composer\\Installer::setPermission",
+			"./yii migrate --interactive=0"
+		]
+	},
 	"extra": {
 		"writable": [
 			"runtime",

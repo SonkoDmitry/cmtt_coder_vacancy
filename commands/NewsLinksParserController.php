@@ -157,7 +157,7 @@ class NewsLinksParserController extends \yii\console\Controller
 				$vkShares = 0;
 				$matches = [];
 				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, 'https://vk.com/share.php?act=count&index=1&url=' . $link->link);
+				curl_setopt($ch, CURLOPT_URL, 'https://vk.com/share.php?act=count&index=1&url=' . $model->link);
 				curl_setopt($ch, CURLOPT_HEADER, 0);
 				curl_setopt($ch, CURLOPT_VERBOSE, 0);
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -175,7 +175,7 @@ class NewsLinksParserController extends \yii\console\Controller
 				$fbShares = 0;
 				$matches = [];
 				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, 'http://graph.facebook.com/?ids=' . $link->link);
+				curl_setopt($ch, CURLOPT_URL, 'http://graph.facebook.com/?ids=' . $model->link);
 				curl_setopt($ch, CURLOPT_HEADER, 0);
 				curl_setopt($ch, CURLOPT_VERBOSE, 0);
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -187,13 +187,13 @@ class NewsLinksParserController extends \yii\console\Controller
 				curl_close($ch);
 				if (false !== ($fbJson = json_decode($content, true))) {
 					/*var_dump($fbJson);*/
-					$fbShares = intval($fbJson[$link->link]['shares']);
+					$fbShares = intval($fbJson[$model->link]['shares']);
 				}
 
 				$twShares = 0;
 				$matches = [];
 				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, 'http://urls.api.twitter.com/1/urls/count.json?url=' . $link->link);
+				curl_setopt($ch, CURLOPT_URL, 'http://urls.api.twitter.com/1/urls/count.json?url=' . $model->link);
 				curl_setopt($ch, CURLOPT_HEADER, 0);
 				curl_setopt($ch, CURLOPT_VERBOSE, 0);
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);

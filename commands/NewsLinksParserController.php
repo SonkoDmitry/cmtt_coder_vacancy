@@ -5,6 +5,7 @@ namespace app\commands;
 
 use app\models\Links;
 use app\models\Sites;
+use yii\db\Expression;
 
 /**
  * Parser links to news from cmtt public API
@@ -66,6 +67,8 @@ class NewsLinksParserController extends \yii\console\Controller
 			if (false !== ($result = json_decode($result)) && false !== ($url = parse_url($result->url))) {
 				$model = new Links();
 				$model->link = $result->url;
+				$model->added = new Expression('NOW()');
+				$model->updated = new Expression('NOW()');
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $result->url);
 				curl_setopt($ch, CURLOPT_HEADER, 0);

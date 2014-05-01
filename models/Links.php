@@ -26,19 +26,6 @@ use yii\db\Expression;
  */
 class Links extends \yii\db\ActiveRecord
 {
-	public function init()
-	{
-		parent::init();
-		$this->on(self::EVENT_BEFORE_VALIDATE, function () {
-			if (empty($this->added)) {
-				$this->added = new Expression('NOW()');
-			}
-			if (empty($this->updated)) {
-				$this->updated = new Expression('NOW()');
-			}
-		});
-	}
-
 	/**
 	 * @inheritdoc
 	 */

@@ -26,8 +26,6 @@ class SharesParserController extends \yii\console\Controller
 		 * @var Links $link
 		 */
 		foreach (Links::find()->orderBy('updated')->limit($limit)->all() as $link) {
-			$totalShares = 0;
-
 			$vkShares = 0;
 			$matches = [];
 			$ch = curl_init();

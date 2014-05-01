@@ -153,6 +153,66 @@ class NewsLinksParserController extends \yii\console\Controller
 				}
 				$model->news_pic = $newsPic;
 
+
+				$vkShares = 0;
+				$matches = [];
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, 'https://vk.com/share.php?act=count&index=1&url=' . $link->link);
+				curl_setopt($ch, CURLOPT_HEADER, 0);
+				curl_setopt($ch, CURLOPT_VERBOSE, 0);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+				curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+				curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 YaBrowser/14.2.1700.12506 Safari/537.36');
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				$content = curl_exec($ch);
+				curl_close($ch);
+				if (preg_match('/^VK.Share.count\(1, (\d+)\);$/i', $content, $matches)) {
+					/*var_dump($matches);*/
+					$vkShares = intval($matches[1]);
+				}
+
+				$fbShares = 0;
+				$matches = [];
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, 'http://graph.facebook.com/?ids=' . $link->link);
+				curl_setopt($ch, CURLOPT_HEADER, 0);
+				curl_setopt($ch, CURLOPT_VERBOSE, 0);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+				curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+				curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 YaBrowser/14.2.1700.12506 Safari/537.36');
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				$content = curl_exec($ch);
+				curl_close($ch);
+				if (false !== ($fbJson = json_decode($content, true))) {
+					/*var_dump($fbJson);*/
+					$fbShares = intval($fbJson[$link->link]['shares']);
+				}
+
+				$twShares = 0;
+				$matches = [];
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, 'http://urls.api.twitter.com/1/urls/count.json?url=' . $link->link);
+				curl_setopt($ch, CURLOPT_HEADER, 0);
+				curl_setopt($ch, CURLOPT_VERBOSE, 0);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+				curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+				curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 YaBrowser/14.2.1700.12506 Safari/537.36');
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				$content = curl_exec($ch);
+				curl_close($ch);
+				if (false !== ($twJson = json_decode($content))) {
+					/*var_dump($fbJson);*/
+					$twShares = intval($twJson->count);
+				}
+
+				$model->news_vk_shares = $vkShares;
+				$model->news_fb_shares = $fbShares;
+				$model->news_tw_shares = $twShares;
+				$model->news_total_shares = $vkShares + $fbShares + $twShares;
+
 				if ($model->validate()) {
 					if ($site = Sites::findOne(['domain' => $url])) {
 						$model->site_id = $site->id;

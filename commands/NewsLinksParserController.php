@@ -36,7 +36,7 @@ class NewsLinksParserController extends \yii\console\Controller
 		$siteContent = curl_exec($ch);
 		curl_close($ch);
 		$matches = [];
-		if (preg_match('/property=[\"\']og:site_name[\"\']\scontent\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\sproperty=[\"\']og:site_name[\"\']/i', $siteContent, $matches)) {
+		if (preg_match('/property=[\"\']og:site_name[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\s+property=[\"\']og:site_name[\"\']/i', $siteContent, $matches)) {
 			$siteName = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : $url['host']);
 			if (mb_convert_encoding($siteName, 'UTF-8', 'UTF-8') !== $siteName) {
 				$siteName = mb_convert_encoding($siteName, 'UTF-8', 'WINDOWS-1251');
@@ -81,14 +81,14 @@ class NewsLinksParserController extends \yii\console\Controller
 
 				$newsTitle = '';
 				$matches = [];
-				if (preg_match('/property=[\"\']og:title[\"\']\scontent\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\sproperty=[\"\']og:title[\"\']/i', $newsContent, $matches)) {
+				if (preg_match('/property=[\"\']og:title[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\s+property=[\"\']og:title[\"\']/i', $newsContent, $matches)) {
 					$newsTitle = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : '');
 					if (mb_convert_encoding($newsTitle, 'UTF-8', 'UTF-8') !== $newsTitle) {
 						$newsTitle = mb_convert_encoding($newsTitle, 'UTF-8', 'WINDOWS-1251');
 					}
 					/*echo "News title: " . $newsTitle . "\n";
 					echo "Parsed from <og:title>\n\n";*/
-				} elseif (preg_match('/property=[\"\']vk:title[\"\']\scontent\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\sproperty=[\"\']vk:title[\"\']/i', $newsContent, $matches)) {
+				} elseif (preg_match('/property=[\"\']vk:title[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\s+property=[\"\']vk:title[\"\']/i', $newsContent, $matches)) {
 					$newsTitle = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : '');
 					if (mb_convert_encoding($newsTitle, 'UTF-8', 'UTF-8') !== $newsTitle) {
 						$newsTitle = mb_convert_encoding($newsTitle, 'UTF-8', 'WINDOWS-1251');
@@ -107,21 +107,21 @@ class NewsLinksParserController extends \yii\console\Controller
 
 				$newsDescription = '';
 				$matches = [];
-				if (preg_match('/property=[\"\']og:description[\"\']\scontent\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\sproperty=[\"\']og:description[\"\']/i', $newsContent, $matches)) {
+				if (preg_match('/property=[\"\']og:description[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\s+property=[\"\']og:description[\"\']/i', $newsContent, $matches)) {
 					$newsDescription = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : '');
 					if (mb_convert_encoding($newsDescription, 'UTF-8', 'UTF-8') !== $newsDescription) {
 						$newsDescription = mb_convert_encoding($newsDescription, 'UTF-8', 'WINDOWS-1251');
 					}
 					/*echo "News description: " . $newsDescription . "\n";
 					echo "Parsed from <og:description>\n\n";*/
-				} elseif (preg_match('/property=[\"\']vk:description[\"\']\scontent\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\sproperty=[\"\']vk:description[\"\']/i', $newsContent, $matches)) {
+				} elseif (preg_match('/property=[\"\']vk:description[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\s+property=[\"\']vk:description[\"\']/i', $newsContent, $matches)) {
 					$newsDescription = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : '');
 					if (mb_convert_encoding($newsDescription, 'UTF-8', 'UTF-8') !== $newsDescription) {
 						$newsDescription = mb_convert_encoding($newsDescription, 'UTF-8', 'WINDOWS-1251');
 					}
 					/*echo "News description: " . $newsDescription . "\n";
 					echo "Parsed from <vk:description>\n\n";*/
-				} elseif (preg_match('/name=[\"\']description[\"\']\scontent\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\sname=[\"\']description[\"\']/i', $newsContent, $matches)) {
+				} elseif (preg_match('/name=[\"\']description[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\s+name=[\"\']description[\"\']/i', $newsContent, $matches)) {
 					$newsDescription = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : '');
 					if (mb_convert_encoding($newsDescription, 'UTF-8', 'UTF-8') !== $newsDescription) {
 						$newsDescription = mb_convert_encoding($newsDescription, 'UTF-8', 'WINDOWS-1251');
@@ -133,14 +133,14 @@ class NewsLinksParserController extends \yii\console\Controller
 
 				$newsPic = '';
 				$matches = [];
-				if (preg_match('/property=[\"\']og:image[\"\']\scontent\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\sproperty=[\"\']og:image[\"\']/i', $newsContent, $matches)) {
+				if (preg_match('/property=[\"\']og:image[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\s+property=[\"\']og:image[\"\']/i', $newsContent, $matches)) {
 					$newsPic = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : '');
 					if (mb_convert_encoding($newsPic, 'UTF-8', 'UTF-8') !== $newsPic) {
 						$newsPic = mb_convert_encoding($newsPic, 'UTF-8', 'WINDOWS-1251');
 					}
 					/*echo "News pic: " . $newsPic . "\n";
 					echo "Parsed from <og:image>\n\n";*/
-				} elseif (preg_match('/name=[\"\']description[\"\']\scontent\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\sname=[\"\']description[\"\']/i', $newsContent, $matches)) {
+				} elseif (preg_match('/name=[\"\']description[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\sname=[\"\']description[\"\']/i', $newsContent, $matches)) {
 					$newsPic = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : '');
 					if (mb_convert_encoding($newsPic, 'UTF-8', 'UTF-8') !== $newsPic) {
 						$newsPic = mb_convert_encoding($newsPic, 'UTF-8', 'WINDOWS-1251');
@@ -167,7 +167,7 @@ class NewsLinksParserController extends \yii\console\Controller
 						$siteContent = curl_exec($ch);
 						curl_close($ch);
 						$matches = [];
-						if (preg_match('/property=[\"\']og:site_name[\"\']\scontent\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\sproperty=[\"\']og:site_name[\"\']/i', $siteContent, $matches)) {
+						if (preg_match('/property=[\"\']og:site_name[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\s+property=[\"\']og:site_name[\"\']/i', $siteContent, $matches)) {
 							$siteName = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : $url['host']);
 							if (mb_convert_encoding($siteName, 'UTF-8', 'UTF-8') !== $siteName) {
 								$siteName = mb_convert_encoding($siteName, 'UTF-8', 'WINDOWS-1251');

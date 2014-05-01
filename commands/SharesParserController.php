@@ -92,6 +92,7 @@ class SharesParserController extends \yii\console\Controller
 			$log->news_fb_shares = $fbShares;
 			$log->news_tw_shares = $twShares;
 			$log->news_total_shares = $vkShares + $fbShares + $twShares;
+			$log->added = new Expression('NOW()');
 			$log->save();
 		}
 	}

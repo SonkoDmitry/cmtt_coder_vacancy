@@ -7,8 +7,8 @@ $this->title = Yii::$app->name;
 echo '<h1>Самые популярные репортажи:</h1>';
 echo '<ul class="medias">';
 foreach ($model as $media){
-	echo '<li>';
-	echo (!empty($media->news_pic) ? '<img src="' . $media->news_pic . '" alt="' . $media->news_title . '" align="">' : '') . '<a href="' . $media->link . '" target="_blank" title="' . $media->news_title . '""><h2>' . $media->news_title . '</h2></a>';
+	echo '<li style="display: inline-block">';
+	echo '<a href="' . $media->link . '" target="_blank" title="' . $media->news_title . '""><h2>' . $media->news_title . '</h2></a>'.(!empty($media->news_pic) ? '<img style="margin-right: 10px;" src="' . $media->news_pic . '" alt="' . $media->news_title . '" align="left">' : '');
 	if (!empty($media->news_description)) {
 		echo $media->news_description . '&nbsp;<a href="' . $media->link . '" target="_blank" title="' . $media->news_title . '"">Подробнее</a><br><br>';
 	}

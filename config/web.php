@@ -41,9 +41,13 @@ $config = [
 			//'suffix' => '.html',
 			'rules' => [
 				'gii' => 'gii',
-				'medias/<media:.*>'=>'main/medias',
+				'medias/<media:.*>' => 'main/medias',
 				'<action:\w+>' => 'main/<action>',
 			],
+		],
+		'db' => [
+			'enableQueryCache' => true,
+			'queryCacheDuration' => 60,
 		],
 	],
 ];

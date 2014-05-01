@@ -13,7 +13,7 @@ foreach ($model as $media) {
 	if (!empty($media->news_description)) {
 		echo $media->news_description . '&nbsp;<a href="' . $media->link . '" target="_blank" title="' . $media->news_title . '"">Подробнее</a><br><br>';
 	}
-	echo 'Источник: <a href="' . $media->link . '" target="_blank">' . $media->site->name . '</a><br>';
+	echo 'Источник: <a href="' . $media->link . '" target="_blank">' . $media->site->name . '&nbsp;<img src="//favicon.yandex.net/favicon/' . $media->site->domain . '" / class="list"></a><br>';
 	echo $media->news_total_shares . ' упоминаний: ';
 	echo '<img src="//s1.static.twijournal.com/main/img/icon-tw-12-gray.png">&nbsp;' . $media->news_tw_shares;
 	echo '&nbsp;<img src="//s2.static.twijournal.com/main/img/icon-vk-12-gray.png">&nbsp;' . $media->news_vk_shares;

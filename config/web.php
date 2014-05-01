@@ -5,7 +5,7 @@ $main = require(__DIR__ . '/main.php');
 $config = [
 	'id' => 'basic',
 	'basePath' => dirname(__DIR__),
-	'name' => 'ИПО Дом мой CRM',
+	'name' => 'Cmtt coder vacancy',
 	'language' => 'ru',
 	'extensions' => require(__DIR__ . '/../vendor/yiisoft/extensions.php'),
 	'defaultRoute' => 'main',
@@ -37,10 +37,12 @@ $config = [
 		'urlManager' => [
 			'enablePrettyUrl' => true,
 			'showScriptName' => false,
+			//'enableStrictParsing'=>true,
 			//'suffix' => '.html',
 			'rules' => [
 				'gii' => 'gii',
-				'<action:\w+>' => 'crm/<action>'
+				'medias/<media:.*>'=>'main/medias',
+				'<action:\w+>' => 'main/<action>',
 			],
 		],
 	],

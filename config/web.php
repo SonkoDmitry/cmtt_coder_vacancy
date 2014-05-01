@@ -67,7 +67,7 @@ if (YII_ENV_DEV) {
 			'model' => [
 				'class' => 'app\extended\yiisoft\yii2gii\generators\model\Generator',
 				'templates' => [
-					'default' => '@vendor/yiisoft/yii2-gii/generators/model/templates',
+					'default' => '@vendor/yiisoft/yii2-gii/generators/model/default',
 				],
 			],
 		],

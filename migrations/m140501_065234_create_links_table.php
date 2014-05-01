@@ -17,8 +17,8 @@ class m140501_065234_create_links_table extends \yii\db\Migration
 				'news_fb_shares' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
 				'news_tw_shares' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
 				'news_total_shares' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
-				'added' => Schema::TYPE_TIMESTAMP . ' NOT NULL',
-				'updated' => Schema::TYPE_TIMESTAMP . ' NOT NULL',
+				'added' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT \'0000-00-00 00:00:00\'',
+				'updated' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT \'0000-00-00 00:00:00\'',
 			]
 		);
 		$this->addForeignKey('links_sites', '{{%links}}', 'site_id', '{{%sites}}', 'id', 'CASCADE', 'CASCADE');

@@ -4,6 +4,8 @@
 namespace app\commands;
 
 use app\models\Links;
+use app\models\Words;
+use app\models\WordsLinks;
 use app\models\Sites;
 use yii\db\Expression;
 

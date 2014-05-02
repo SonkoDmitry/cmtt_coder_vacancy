@@ -12,7 +12,7 @@ $config = [
 	'layout' => 'main',
 	'components' => [
 		'cache' => [
-			'class' => 'yii\caching\FileCache',
+			'class' => 'yii\caching\MemCache',
 		],
 		/*'user' => [
 			'identityClass' => 'app\models\Users',

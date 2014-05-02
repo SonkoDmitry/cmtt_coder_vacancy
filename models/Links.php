@@ -23,6 +23,7 @@ use yii\db\Expression;
  *
  * @property Sites $site
  * @property Logs[] $logs
+ * @property WordsLinks[] $wordsLinks
  */
 class Links extends \yii\db\ActiveRecord
 {
@@ -83,5 +84,13 @@ class Links extends \yii\db\ActiveRecord
 	public function getLogs()
 	{
 		return $this->hasMany(Logs::className(), ['link_id' => 'id']);
+	}
+
+	/**
+	 * @return \yii\db\ActiveQuery
+	 */
+	public function getWordsLinks()
+	{
+		return $this->hasMany(WordsLinks::className(), ['link_id' => 'id']);
 	}
 }

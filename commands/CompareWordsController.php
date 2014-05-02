@@ -11,21 +11,6 @@ class CompareWordsController extends \yii\console\Controller
 {
 	public function actionIndex()
 	{
-		/*$str1 = 'мама';
-		$str2 = 'мамутавоюванал';
-		var_dump(levenshtein($str1, $str2));
-		$percent = 0;
-		$result = similar_text($str1, $str2, $percent);
-		var_dump($result);
-		var_dump($percent);
-
-
-		$model = Links::find()->where(['completed' => 0])->one();
-		var_dump($model->news_title);
-		$model = Words::find()->joinWith('wordsLinks.word')->one();
-		var_dump($model);
-		die;*/
-
 		//2 получаем список слов, используемых в этой записи
 		//2.1 отдельно сравниваем слова из тайтла со словами из тайтла
 		//2.2 отдельно сравниванием слова из тайтла со словами из деска
@@ -65,6 +50,18 @@ class CompareWordsController extends \yii\console\Controller
 					$record->compare = round($percent, 2);
 					$record->added = new Expression('NOW()');
 					$record->save();
+
+					$percent = 0;
+					$result = similar_text($secondWordTitle->word, $firstWordTitle->word, $percent);
+					$record = new WordsCompare();
+					$record->link_first_id = $secondWordTitle->wordsLinks->link_id;
+					$record->word_first_id = $secondWordTitle->id;
+					$record->link_second_id = $link->id;
+					$record->word_second_id = $firstWordTitle->id;
+					$record->type = 'title_title';
+					$record->compare = round($percent, 2);
+					$record->added = new Expression('NOW()');
+					$record->save();
 				}
 				//2.1 сравниваем слова из тайтла со словами из деска других новостей
 				foreach (Words::find()->joinWith(['wordsLinks' => function ($query) use ($link) {
@@ -82,6 +79,18 @@ class CompareWordsController extends \yii\console\Controller
 					$record->link_second_id = $secondWordTitle->wordsLinks->link_id;
 					$record->word_second_id = $secondWordTitle->id;
 					$record->type = 'title_description';
+					$record->compare = round($percent, 2);
+					$record->added = new Expression('NOW()');
+					$record->save();
+
+					$percent = 0;
+					$result = similar_text($secondWordTitle->word, $firstWordTitle->word, $percent);
+					$record = new WordsCompare();
+					$record->link_first_id = $secondWordTitle->wordsLinks->link_id;
+					$record->word_first_id = $secondWordTitle->id;
+					$record->link_second_id = $link->id;
+					$record->word_second_id = $firstWordTitle->id;
+					$record->type = 'description_title';
 					$record->compare = round($percent, 2);
 					$record->added = new Expression('NOW()');
 					$record->save();
@@ -115,6 +124,18 @@ class CompareWordsController extends \yii\console\Controller
 					$record->compare = round($percent, 2);
 					$record->added = new Expression('NOW()');
 					$record->save();
+
+					$percent = 0;
+					$result = similar_text($secondWordTitle->word, $firstWordTitle->word, $percent);
+					$record = new WordsCompare();
+					$record->link_first_id = $secondWordTitle->wordsLinks->link_id;
+					$record->word_first_id = $secondWordTitle->id;
+					$record->link_second_id = $link->id;
+					$record->word_second_id = $firstWordTitle->id;
+					$record->type = 'title_description';
+					$record->compare = round($percent, 2);
+					$record->added = new Expression('NOW()');
+					$record->save();
 				}
 				//2.4 сравниваем слова из декска со словами из деска других новостей
 				foreach (Words::find()->joinWith(['wordsLinks' => function ($query) use ($link) {
@@ -131,6 +152,18 @@ class CompareWordsController extends \yii\console\Controller
 					$record->word_first_id = $firstWordTitle->id;
 					$record->link_second_id = $secondWordTitle->wordsLinks->link_id;
 					$record->word_second_id = $secondWordTitle->id;
+					$record->type = 'description_description';
+					$record->compare = round($percent, 2);
+					$record->added = new Expression('NOW()');
+					$record->save();
+
+					$percent = 0;
+					$result = similar_text($secondWordTitle->word, $firstWordTitle->word, $percent);
+					$record = new WordsCompare();
+					$record->link_first_id = $secondWordTitle->wordsLinks->link_id;
+					$record->word_first_id = $secondWordTitle->id;
+					$record->link_second_id = $link->id;
+					$record->word_second_id = $firstWordTitle->id;
 					$record->type = 'description_description';
 					$record->compare = round($percent, 2);
 					$record->added = new Expression('NOW()');

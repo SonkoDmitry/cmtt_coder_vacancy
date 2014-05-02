@@ -45,7 +45,6 @@ class Links extends \yii\db\ActiveRecord
 			[['news_description', 'news_pic'], 'string'],
 			[['added', 'updated'], 'safe'],
 			[['link', 'news_title'], 'string', 'max' => 255],
-			[['link'], 'unique'],
 		];
 	}
 

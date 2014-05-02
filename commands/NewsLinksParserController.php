@@ -65,6 +65,13 @@ class NewsLinksParserController extends \yii\console\Controller
 		for ($i = 1; $i <= $needLinks; $i++) {
 			$result = file_get_contents('https://api.tjournal.ru/1/vacancy');
 			if (false !== ($result = json_decode($result)) && false !== ($url = parse_url($result->url))) {
+				$command = \Yii::$app->db->createCommand('SELECT 1 FROM ' . Links::tableName() . ' WHERE link=:link LIMIT 1');
+				$command->bindValue(':link', $result->url, \PDO::PARAM_STR);
+				$result = $command->queryOne();
+				if (!$result) {
+					continue;
+				}
+
 				$model = new Links();
 				$model->link = $result->url;
 				$model->added = new Expression('NOW()');
@@ -213,49 +220,47 @@ class NewsLinksParserController extends \yii\console\Controller
 				$model->news_tw_shares = $twShares;
 				$model->news_total_shares = $vkShares + $fbShares + $twShares;
 
-				if ($model->validate()) {
-					if ($site = Sites::findOne(['domain' => $url])) {
-						$model->site_id = $site->id;
+				if ($site = Sites::findOne(['domain' => $url])) {
+					$model->site_id = $site->id;
+				} else {
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_URL, $url['scheme'] . '://' . $url['host']);
+					curl_setopt($ch, CURLOPT_HEADER, 0);
+					curl_setopt($ch, CURLOPT_VERBOSE, 0);
+					curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+					curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+					curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 YaBrowser/14.2.1700.12506 Safari/537.36');
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+
+					$siteContent = curl_exec($ch);
+					curl_close($ch);
+					$matches = [];
+					if (preg_match('/property=[\"\']og:site_name[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\s+property=[\"\']og:site_name[\"\']/i', $siteContent, $matches)) {
+						$siteName = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : $url['host']);
+						if (mb_convert_encoding($siteName, 'UTF-8', 'UTF-8') !== $siteName) {
+							$siteName = mb_convert_encoding($siteName, 'UTF-8', 'WINDOWS-1251');
+						}
+						/*echo "Parsed from <og:site_name>\n";
+						echo $siteName . "\n\n";*/
+					} elseif (preg_match('/<title>\s*(.*)\s*<\/title>/i', $siteContent, $matches)) {
+						$siteName = $matches[1];
+						if (mb_convert_encoding($siteName, 'UTF-8', 'UTF-8') !== $siteName) {
+							$siteName = mb_convert_encoding($matches[1], 'UTF-8', 'WINDOWS-1251');
+						}
+						/*echo "Parsed from <title>\n";
+						echo $siteName . "\n\n";*/
 					} else {
-						$ch = curl_init();
-						curl_setopt($ch, CURLOPT_URL, $url['scheme'] . '://' . $url['host']);
-						curl_setopt($ch, CURLOPT_HEADER, 0);
-						curl_setopt($ch, CURLOPT_VERBOSE, 0);
-						curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-						curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
-						curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.102 YaBrowser/14.2.1700.12506 Safari/537.36');
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-
-						$siteContent = curl_exec($ch);
-						curl_close($ch);
-						$matches = [];
-						if (preg_match('/property=[\"\']og:site_name[\"\']\s+content\s*=\s*(?P<quote>[\"\'])(?P<content>.*?)\k<quote>|content\s*=\s*(?P<quote2>[\"\'])(?P<content2>.*?)\k<quote2>\s+property=[\"\']og:site_name[\"\']/i', $siteContent, $matches)) {
-							$siteName = (isset($matches['content']) && !empty($matches['content'])) ? $matches['content'] : (isset($matches['content2']) && !empty($matches['content2']) ? $matches['content2'] : $url['host']);
-							if (mb_convert_encoding($siteName, 'UTF-8', 'UTF-8') !== $siteName) {
-								$siteName = mb_convert_encoding($siteName, 'UTF-8', 'WINDOWS-1251');
-							}
-							/*echo "Parsed from <og:site_name>\n";
-							echo $siteName . "\n\n";*/
-						} elseif (preg_match('/<title>\s*(.*)\s*<\/title>/i', $siteContent, $matches)) {
-							$siteName = $matches[1];
-							if (mb_convert_encoding($siteName, 'UTF-8', 'UTF-8') !== $siteName) {
-								$siteName = mb_convert_encoding($matches[1], 'UTF-8', 'WINDOWS-1251');
-							}
-							/*echo "Parsed from <title>\n";
-							echo $siteName . "\n\n";*/
-						} else {
-							$siteName = $url['host'];
-						}
-						$siteModel = new Sites();
-						$siteModel->name = $siteName;
-						$siteModel->domain = $url['host'];
-						if ($siteModel->validate() && $siteModel->save()) {
-							$model->site_id = $siteModel->id;
-						}
+						$siteName = $url['host'];
 					}
-					$model->save();
+					$siteModel = new Sites();
+					$siteModel->name = $siteName;
+					$siteModel->domain = $url['host'];
+					if ($siteModel->validate() && $siteModel->save()) {
+						$model->site_id = $siteModel->id;
+					}
 				}
+				$model->save();
 			}
 		}
 

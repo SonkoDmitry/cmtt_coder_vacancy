@@ -9,8 +9,14 @@ use yii\db\Expression;
 
 class CompareWordsController extends \yii\console\Controller
 {
-	public function actionIndex()
+	/**
+	 * @param int $limit Count records for compares
+	 */
+	public function actionIndex($limit = 10)
 	{
+		if (($limit = (int)$limit) < 1) {
+			$limit = 1;
+		}
 		//2 получаем список слов, используемых в этой записи
 		//2.1 отдельно сравниваем слова из тайтла со словами из тайтла
 		//2.2 отдельно сравниванием слова из тайтла со словами из деска
@@ -22,7 +28,7 @@ class CompareWordsController extends \yii\console\Controller
 		/**
 		 * @var Links $link
 		 */
-		foreach (Links::find()->where(['completed' => 0])->all() as $link) {
+		foreach (Links::find()->where(['completed' => 0])->limit($limit)->all() as $link) {
 			//берем все слова из тайтла текущей новости
 			foreach (Words::find()->joinWith(['wordsLinks' => function ($query) use ($link) {
 					$query->andWhere("link_id=" . $link->id . "");

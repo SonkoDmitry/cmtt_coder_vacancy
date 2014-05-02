@@ -20,6 +20,7 @@ use yii\db\Expression;
  * @property integer $news_total_shares
  * @property string $added
  * @property string $updated
+ * @property integer $completed
  *
  * @property Sites $site
  * @property Logs[] $logs
@@ -42,7 +43,7 @@ class Links extends \yii\db\ActiveRecord
 	{
 		return [
 			[['link', 'added', 'updated'], 'required'],
-			[['site_id', 'news_vk_shares', 'news_fb_shares', 'news_tw_shares', 'news_total_shares'], 'integer'],
+			[['site_id', 'news_vk_shares', 'news_fb_shares', 'news_tw_shares', 'news_total_shares', 'completed'], 'integer'],
 			[['news_description', 'news_pic'], 'string'],
 			[['added', 'updated'], 'safe'],
 			[['link', 'news_title'], 'string', 'max' => 255],
@@ -67,6 +68,7 @@ class Links extends \yii\db\ActiveRecord
 			'news_total_shares' => 'News Total Shares',
 			'added' => 'Added',
 			'updated' => 'Updated',
+			'completed' => 'Completed',
 		];
 	}
 

@@ -11,7 +11,8 @@ use Yii;
  * @property string $word
  * @property string $added
  *
- * @property WordsLinks[] $wordsLinks
+ * @property WordsCompare[] $wordsCompares
+ * @property WordsLinks $wordsLinks
  */
 class Words extends \yii\db\ActiveRecord
 {
@@ -50,8 +51,16 @@ class Words extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getWordsCompares()
+    {
+        return $this->hasMany(WordsCompare::className(), ['word_second_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getWordsLinks()
     {
-        return $this->hasMany(WordsLinks::className(), ['word_id' => 'id']);
+        return $this->hasOne(WordsLinks::className(), ['word_id' => 'id']);
     }
 }

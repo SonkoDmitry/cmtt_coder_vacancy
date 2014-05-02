@@ -32,7 +32,7 @@ class NewsLinksParserController extends \yii\console\Controller
 				$command->bindValue(':link', $result->url, \PDO::PARAM_STR);
 				$check = $command->queryOne();
 				if ($check !== false) {
-					echo "Link with url " . $result->url . " existed\n";
+					/*echo "Link with url " . $result->url . " existed\n";*/
 					continue;
 				}
 

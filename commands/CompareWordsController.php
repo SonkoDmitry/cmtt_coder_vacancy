@@ -14,14 +14,17 @@ class CompareWordsController extends \yii\console\Controller
 	 */
 	public function actionIndex($limit = 10, $completed = 0)
 	{
-		if ($completed == '') {
-			$linksModel = Links::find()->limit($limit)->all();
-		} else {
-			$linksModel = Links::find()->where(['completed' => $completed])->limit($limit)->all();
+		/*var_dump($limit);
+		var_dump($completed);
+		die;*/
+		$linksModel = Links::find();
+		if ($completed !== '') {
+			$linksModel->where(['completed' => $completed]);
 		}
-		if (($limit = (int)$limit) < 1) {
-			$limit = 1;
+		if ($limit > 0) {
+			$linksModel->limit($limit);
 		}
+		$linksModel = $linksModel->all();
 		/**
 		 * @var Links $link
 		 * @var Words $firstWordTitle

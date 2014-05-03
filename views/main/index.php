@@ -21,13 +21,13 @@ foreach ($renderNews as $element) {
 		echo $head->news_description . '&nbsp;<a href="' . $head->link . '" target="_blank" title="' . $head->news_title . '"">Подробнее</a><br><br>';
 	}
 	if (count($element['news'])) {
-		echo '<h3>Источники:</h3>';
+		echo '<h3>Похожее:</h3>';
 		foreach ($element['news'] as $sourceId => $sourceCnt) {
 			$source = Links::findOne(['id' => $sourceId]);
 			echo '<img src="//favicon.yandex.net/favicon/' . $source->site->domain . '" / class="list"><a href="'.$source->link.'" title="'.$source->news_title.'">'.$source->news_title.'</a><br>';
 			echo '<img src="//s1.static.twijournal.com/main/img/icon-tw-12-gray.png">&nbsp;' . $source->news_tw_shares;
 			echo '&nbsp;<img src="//s2.static.twijournal.com/main/img/icon-vk-12-gray.png">&nbsp;' . $source->news_vk_shares;
-			echo '&nbsp;<img src="//s3.static.twijournal.com/main/img/icon-fb-12-gray.png">&nbsp;' . $head->news_fb_shares . '&nbsp;<br><br>';
+			echo '&nbsp;<img src="//s3.static.twijournal.com/main/img/icon-fb-12-gray.png">&nbsp;' . $source->news_fb_shares . '&nbsp;<br><br>';
 			//$source
 		}
 	}

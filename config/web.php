@@ -48,7 +48,7 @@ $config = [
 		],
 		'db' => [
 			'enableQueryCache' => true,
-			'queryCacheDuration' => 60,
+			'queryCacheDuration' => 300,
 		],
 	],
 ];

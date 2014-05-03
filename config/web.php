@@ -12,7 +12,7 @@ $config = [
 	'layout' => 'main',
 	'components' => [
 		'cache' => [
-			'class' => 'yii\caching\MemCache',
+			'class' => 'yii\caching\FileCache',
 		],
 		/*'user' => [
 			'identityClass' => 'app\models\Users',
@@ -43,6 +43,7 @@ $config = [
 				'gii' => 'gii',
 				'medias/<media:.*>' => 'main/medias',
 				'<action:\w+>' => 'main/<action>',
+				'all-news'=>'main/all-news',
 			],
 		],
 		'db' => [

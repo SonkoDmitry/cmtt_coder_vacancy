@@ -31,6 +31,7 @@ AppAsset::register($this);
 			'options' => ['class' => 'navbar-nav navbar-right'],
 			'items' => [
 				['label' => 'Главная', 'url' => ['/main/index']],
+				['label' => 'Все новости', 'url' => ['/main/all-news']],
 				['label' => 'Источники', 'url' => ['/main/medias']],
 				/*['label' => 'Contact', 'url' => ['/main/contact']],*/
 				/*Yii::$app->user->isGuest ?

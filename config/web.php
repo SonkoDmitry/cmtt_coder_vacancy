@@ -41,9 +41,10 @@ $config = [
 			//'suffix' => '.html',
 			'rules' => [
 				'gii' => 'gii',
+				'index/<factor:\d*>' => 'main/index',
 				'medias/<media:.*>' => 'main/medias',
 				'<action:\w+>' => 'main/<action>',
-				'all-news'=>'main/all-news',
+				'all-news' => 'main/all-news',
 			],
 		],
 		'db' => [

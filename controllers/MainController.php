@@ -8,8 +8,11 @@ use app\models\WordsCompare;
 
 class MainController extends \yii\web\Controller
 {
-	public function actionIndex()
+	public function actionIndex($factor = 4)
 	{
+		if (($factor = (int)$factor) < 2) {
+			$factor = 2;
+		}
 		//$model = Links::find()->orderBy('news_total_shares DESC')->all();
 		$news = [];
 		/**
@@ -24,7 +27,7 @@ class MainController extends \yii\web\Controller
 					'link_first_id' => $result->link_first_id,
 					'link_second_id' => $result->link_second_id
 				])->count();
-				if ($count < 4) {
+				if ($count < $factor) {
 					continue;
 				}
 				$input[] = $result->link_second_id;

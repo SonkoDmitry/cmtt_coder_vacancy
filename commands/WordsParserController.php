@@ -11,6 +11,54 @@ class WordsParserController extends \yii\console\Controller
 {
 	public function actionIndex()
 	{
+		$okonch = [
+			'ий',
+			'ов',
+			'ей',
+			'ев',
+			'иев',
+			'ам',
+			'ям',
+			'иям',
+			'ом',
+			'ем',
+			'ами',
+			'ями',
+			'ах',
+			'ях',
+			'ый',
+			'ая',
+			'ое',
+			'ые',
+			'ого',
+			'ой',
+			'ых',
+			'ому',
+			'ым',
+			'ыми',
+			'ий',
+			'яя',
+			'ее',
+			'ие',
+			'его',
+			'ей',
+			'их',
+			'ему',
+			'им',
+			'ешь',
+			'ет',
+			'ем',
+			'ете',
+			'ут',
+			'ют',
+			'ишь',
+			'ит',
+			'им',
+			'ите',
+			'ат',
+			'ят',
+		];
+		$regex = '/([' . implode('|', array_unique($okonch)) . ']|[уеаоэяию])*$/i';
 		/**
 		 * @var $model Links
 		 */
@@ -20,6 +68,7 @@ class WordsParserController extends \yii\console\Controller
 			$link_title = preg_replace('/([^a-zа-я0-9\s-])/u', '', $link_title);
 			$titles = explode(' ', mb_strtolower($link_title, 'UTF-8'));
 			foreach ($titles as $title) {
+				$title = preg_replace($regex, '', $title);
 				if (mb_strlen($title, 'UTF-8') < 3) {
 					continue;
 				}
@@ -50,6 +99,7 @@ class WordsParserController extends \yii\console\Controller
 			$link_desc = preg_replace('/([^a-zа-я0-9\s-])/u', '', $link_desc);
 			$descs = explode(' ', mb_strtolower($link_desc, 'UTF-8'));
 			foreach ($descs as $desc) {
+				$desc = preg_replace($regex, '', $desc);
 				if (mb_strlen($desc, 'UTF-8') < 3) {
 					continue;
 				}

@@ -160,7 +160,9 @@ class NewsLinksParserController extends \yii\console\Controller
 				curl_close($ch);
 				if (false !== ($fbJson = json_decode($content, true))) {
 					/*var_dump($fbJson);*/
-					$fbShares = intval($fbJson[$model->link]['shares']);
+					if (isset($fbJson[$model->link]) && isset($fbJson[$model->link]['shares'])) {
+						$fbShares = intval($fbJson[$model->link]['shares']);
+					}
 				}
 
 				$twShares = 0;

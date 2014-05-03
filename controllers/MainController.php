@@ -24,7 +24,7 @@ class MainController extends \yii\web\Controller
 					'link_first_id' => $result->link_first_id,
 					'link_second_id' => $result->link_second_id
 				])->count();
-				if ($count < 5) {
+				if ($count < 3) {
 					continue;
 				}
 				$input[] = $result->link_second_id;

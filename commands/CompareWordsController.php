@@ -5,6 +5,8 @@ namespace app\commands;
 use app\models\Links;
 use app\models\Words;
 use app\models\WordsCompare;
+use app\models\WordsLinks;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 
 class CompareWordsController extends \yii\console\Controller
@@ -34,6 +36,7 @@ class CompareWordsController extends \yii\console\Controller
 			//берем все слова из текущей новости
 			foreach (Words::find()->joinWith(['wordsLinks' => function ($query) use ($link) {
 					$query->andWhere("link_id=" . $link->id . "");
+					$query->groupBy('word_id');
 					//$query->andWhere("type='title'");
 				}])->all() as $firstWordTitle) {
 				//echo "Compare word: ".$firstWordTitle->word." (".$firstWordTitle->id."), link_id: ".$firstWordTitle->wordsLinks->link_id."\n";
@@ -44,6 +47,7 @@ class CompareWordsController extends \yii\console\Controller
 				foreach (Words::find()->joinWith(['wordsLinks' => function ($query) use ($link, $firstWordTitle) {
 						$query->andWhere("link_id!=" . $link->id . "");
 						$query->andWhere("word_id=" . $firstWordTitle->id . "");
+						$query->groupBy('word_id');
 						//$query->andWhere("type='title'");
 					}])->all() as $secondWordTitle) {
 					//echo "Finded in link: ".$secondWordTitle->wordsLinks->link_id."\n";
